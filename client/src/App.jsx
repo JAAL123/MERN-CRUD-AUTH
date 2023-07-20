@@ -1,10 +1,20 @@
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
 
 function App() {
 
   return (
-    <div>
-      <p className="text-4xl font-bold">Hola mundo</p>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<h1>Home Page</h1>} />
+        <Route path='/login' element={<h1>Login</h1>} />
+        <Route path='/register' element={<h1>Register</h1>} />
+        <Route path='/tasks' element={<h1>Tasks Page</h1>} />
+        <Route path='/add-task' element={<h1>Add task</h1>} />
+        <Route path='/task/:id' element={<h1>Update Task</h1>} />
+        <Route path='/profile' element={<h1>Profile page</h1>} />
+        
+      </Routes>
+    </BrowserRouter>
   )
 }
 
