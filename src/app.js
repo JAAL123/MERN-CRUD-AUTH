@@ -9,6 +9,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/", (req,res) => {
+    res.send('api running')
+})
+
 app.use("/api", authRoutes);
 app.use("/api", tasksRoutes);
 
