@@ -7,12 +7,14 @@ import {
 } from "../controllers/auth.controller.js";
 
 import { authRequire } from "../middlewares/validateToken.js";
+import { validateSchema } from "../middlewares/validatorMiddleware.js";
+import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
 
 const router = Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.post("/logout", logout);
+router.post("/register", validateSchema(registerSchema), register);
+router.post("/login", validateSchema(loginSchema), login);
+router.post("/logout", authRequire, logout);
 
 router.get("/profile", authRequire, profile);
 
