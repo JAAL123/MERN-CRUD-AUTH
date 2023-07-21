@@ -1,25 +1,17 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { registerRequest } from "../api/auth";
+import { useAuth } from "../context/AuthContex";
 
 export function RegisterPage() {
   const { register, handleSubmit, reset } = useForm();
-  // const [values, setValues] = useState({
-  //   username: '',
-  //   email: '',
-  //   password: ''
-  // })
+  const { signup, user } = useAuth();
+  console.log(user);
+  const onSubmit = handleSubmit(async (values) => {
+    signup(values);
+    reset();
+  });
   return (
     <div className="bg-zinc-800 max-w-md p-10 rounded-md content-center">
-      <form
-        action=""
-        onSubmit={handleSubmit(async (values) => {
-          const res = await registerRequest(values);
-          console.log(res);
-          // setValues(values)
-          reset();
-        })}
-      >
+      <form action="" onSubmit={onSubmit}>
         <input
           type="text"
           {...register("username", { required: true })}

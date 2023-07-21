@@ -19,7 +19,7 @@ export const register = async (req, res) => {
 
     res.cookie("token", token);
 
-    res.json({
+    res.status(201).json({
       id: userSaved._id,
       username: userSaved.username,
       email: userSaved.email,
@@ -28,6 +28,9 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    if(error?.code === 11000){
+      return res.status(422).json({message: "email already taken"})
+    }
     return res.status(500).json({ message: error.message });
   }
 };
