@@ -28,8 +28,10 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    if(error?.code === 11000){
-      return res.status(422).json({message: "email already taken"})
+    if (error?.code === 11000) {
+      return res.status(422).json({
+        message: "the email is already taken"        
+      });
     }
     return res.status(500).json({ message: error.message });
   }
