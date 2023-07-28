@@ -1,6 +1,8 @@
 import User from "../models/users.models.js";
 import bcrypt from "bcrypt";
 import { createAccessToken } from "../libs/jwt.js";
+import { TOKEN_SECRET } from "../config.js";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
@@ -30,7 +32,7 @@ export const register = async (req, res) => {
     console.log(error);
     if (error?.code === 11000) {
       return res.status(422).json({
-        message: "the email is already taken"        
+        message: "the email is already taken",
       });
     }
     return res.status(500).json({ message: error.message });
@@ -82,5 +84,21 @@ export const profile = async (req, res) => {
     id: userFound._id,
     email: userFound.email,
     username: userFound.username,
+  });
+};
+
+export const verifyToken = async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ message: "no autorizado" });
+
+  jwt.verify(token, TOKEN_SECRET, async (err, user) => {
+    if (err) return res.status(401).json({ message: "no autorizado" });
+    const userFound = await User.findById(user.id);
+    if (!userFound) return res.status(401).json({ message: "no autoirzado" });
+    return res.json({
+      id: userFound._id,
+      username: userFound.username,
+      email: userFound.email,
+    });
   });
 };
