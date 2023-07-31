@@ -34,8 +34,8 @@ export const AuthProvider = ({ children }) => {
   const singin = async (credentials) => {
     try {
       const res = await loginRequest(credentials);
-      setUser(res);
       setIsAuthenticated(true);
+      setUser(res.data);
       setErrors(null);
     } catch (error) {
       if (error.response.status === 400) {
@@ -77,8 +77,8 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
           return setUser(null);
         }
-        setIsAuthenticated(true);
         setUser(res.data);
+        setIsAuthenticated(true);
         setLoading(false);
       } catch (error) {
         console.log(error);

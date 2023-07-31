@@ -9,4 +9,4 @@ export const getTaskByIdRequest = (id) => axios.get(`/tasks/${id}`);
 export const updateTaskRequest = (task) =>
   axios.put(`/tasks/${task._id}`, task);
 
-export const deleteTaskRequest = (id) => axios.delete(`/tasks/${id}`);
+export const deleteTaskRequest = (id) => axios.delete(`/task/${id}`);

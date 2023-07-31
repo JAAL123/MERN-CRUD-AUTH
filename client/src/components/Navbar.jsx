@@ -3,7 +3,6 @@ import { useAuth } from "../context/AuthContex";
 
 export function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
-  console.log(user);
   return (
     <>
       <nav className="bg-zinc-700 my-3 flex justify-between py-5 px-10 rounded-lg">
@@ -13,7 +12,7 @@ export function Navbar() {
         <ul className="flex gap-x-2">
           {isAuthenticated ? (
             <>
-              <li className="capitalize">{user.username}</li>
+              <li className="capitalize">{user?.username}</li>
               <li>
                 <Link
                   to="/task/new"

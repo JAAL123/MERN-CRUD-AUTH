@@ -1,5 +1,9 @@
 import { createContext, useContext, useState } from "react";
-import { createTaskRequest, getTaskRequest } from "../api/task";
+import {
+  createTaskRequest,
+  deleteTaskRequest,
+  getTaskRequest,
+} from "../api/task";
 
 const TaskContext = createContext();
 
@@ -17,9 +21,9 @@ export function TaskProvider({ children }) {
   const getTasks = async () => {
     const res = await getTaskRequest();
     try {
-      setTasks(res.data)
+      setTasks(res.data);
     } catch (error) {
-      console.log(res)
+      console.log(res);
     }
   };
 
@@ -28,8 +32,18 @@ export function TaskProvider({ children }) {
     console.log(res);
   };
 
+  const deleteTask = async (id) => {
+    try {
+      const res = await deleteTaskRequest(id);
+      if (res.status === 204) setTasks(tasks.filter((task) => task._id !== id));
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <TaskContext.Provider value={{ tasks, createTask, getTasks }}>
+    <TaskContext.Provider value={{ tasks, createTask, getTasks, deleteTask }}>
       {children}
     </TaskContext.Provider>
   );
