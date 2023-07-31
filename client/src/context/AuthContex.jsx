@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }) => {
       const res = await registerRequest(user);
       setUser(res);
       setIsAuthenticated(true);
-      console.log(res);
     } catch (error) {
       if (error.response.status === 400) setErrors(error.response.data);
       else if (error.response.status === 422)
@@ -38,15 +37,19 @@ export const AuthProvider = ({ children }) => {
       setUser(res);
       setIsAuthenticated(true);
       setErrors(null);
-      console.log(res);
     } catch (error) {
       if (error.response.status === 400) {
         setErrors(error.response.data.message);
-      }
-      else{
+      } else {
         setErrors(error.response.data);
-      } 
+      }
     }
+  };
+
+  const logout = async () => {
+    Cookies.remove("token");
+    setIsAuthenticated(false);
+    setUser(null);
   };
 
   useEffect(() => {
@@ -94,6 +97,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         signup,
         singin,
+        logout,
       }}
     >
       {children}

@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { UseTask } from "../context/TasksContex";
+import { useNavigate } from "react-router-dom";
 
 export function TasksFormPage() {
   const {
@@ -11,10 +12,17 @@ export function TasksFormPage() {
 
   const { createTask } = UseTask();
 
+  const navigate = useNavigate();
+
   const onSubmit = handleSubmit((data) => {
     createTask(data);
     reset();
+    navigate("/tasks");
   });
+
+  const onClick = () => {
+    navigate("/tasks");
+  };
 
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center ">
@@ -47,6 +55,7 @@ export function TasksFormPage() {
           <button
             type="button"
             className="border bg-red-700 border-inherit rounded p-2 mx-2 hover:bg-red-600"
+            onClick={onClick}
           >
             Cancelar
           </button>

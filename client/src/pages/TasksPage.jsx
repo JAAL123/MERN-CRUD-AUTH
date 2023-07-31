@@ -4,7 +4,6 @@ import { UseTask } from "../context/TasksContex";
 
 export function TasksPage() {
   const { user } = useAuth();
-  console.log(user);
   const { getTasks, tasks } = UseTask();
 
   useEffect(() => {
