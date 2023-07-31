@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { UseTask } from "../context/TasksContex";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export function TasksFormPage() {
   const {
@@ -8,14 +9,32 @@ export function TasksFormPage() {
     handleSubmit,
     reset,
     formState: { errors },
+    setValue,
   } = useForm();
 
-  const { createTask } = UseTask();
+  const { createTask, getTaskById, updateTask } = UseTask();
 
   const navigate = useNavigate();
 
+  const params = useParams();
+
+  useEffect(() => {
+    async function loadTask() {
+      if (params.id) {
+        const task = await getTaskById(params.id);
+        setValue("title", task.title);
+        setValue("description", task.description);
+      }
+    }
+    loadTask();
+  }, []);
+
   const onSubmit = handleSubmit((data) => {
-    createTask(data);
+    if (params.id) {
+      updateTask(params.id, data);
+    } else {
+      createTask(data);
+    }
     reset();
     navigate("/tasks");
   });
@@ -27,7 +46,9 @@ export function TasksFormPage() {
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center ">
       <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
-        <h1 className="text-center text-2xl font-bold my-2">Agregar Tarea</h1>
+        <h1 className="text-center text-2xl font-bold my-2">
+          {params?.id ? "Editar" : "Agregar"} Tarea
+        </h1>
 
         <form action="" onSubmit={onSubmit}>
           <input
