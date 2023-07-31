@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const signup = async (user) => {
     try {
@@ -40,7 +40,12 @@ export const AuthProvider = ({ children }) => {
       setErrors(null);
       console.log(res);
     } catch (error) {
-      setErrors(error.response.data);
+      if (error.response.status === 400) {
+        setErrors(error.response.data.message);
+      }
+      else{
+        setErrors(error.response.data);
+      } 
     }
   };
 
@@ -58,22 +63,22 @@ export const AuthProvider = ({ children }) => {
       const cookies = Cookies.get();
       if (!cookies.token) {
         setIsAuthenticated(false);
-        setLoading(false)
+        setLoading(false);
         return setUser(null);
       }
 
       try {
         const res = await verifyTokenRequest(cookies.token);
-        if (!res.data){
-          setIsAuthenticated(false)
-          setLoading(false)
-          return setUser(null)
-        }        
+        if (!res.data) {
+          setIsAuthenticated(false);
+          setLoading(false);
+          return setUser(null);
+        }
         setIsAuthenticated(true);
         setUser(res.data);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         setIsAuthenticated(false);
         setUser(null);
       }

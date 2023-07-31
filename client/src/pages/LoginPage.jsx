@@ -17,6 +17,9 @@ export function LoginPage() {
     if (isAuthenticated) {
       navigate("/tasks");
     }
+    else{
+      return navigate("/login")      
+    }
   }, [isAuthenticated]);
 
   const onSubmit = handleSubmit((data) => {
