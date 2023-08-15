@@ -6,6 +6,10 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { email, password, username } = req.body;
+  const  profileImage  = req?.file?.path;
+
+
+  console.log(profileImage);
 
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -13,6 +17,7 @@ export const register = async (req, res) => {
       username,
       email,
       password: passwordHash,
+      profileImage,
     });
 
     const userSaved = await newUser.save();
@@ -25,6 +30,7 @@ export const register = async (req, res) => {
       id: userSaved._id,
       username: userSaved.username,
       email: userSaved.email,
+      profileImage,
       createdAt: userSaved.createdAt,
       updatedAt: userSaved.updatedAt,
     });
@@ -44,7 +50,8 @@ export const login = async (req, res) => {
   try {
     const userFound = await User.findOne({ email });
 
-    if (!userFound) return res.status(400).json({ message: "Correo no registrado" });
+    if (!userFound)
+      return res.status(400).json({ message: "Correo no registrado" });
 
     const isMatch = await bcrypt.compare(password, userFound.password);
 
@@ -84,6 +91,7 @@ export const profile = async (req, res) => {
     id: userFound._id,
     email: userFound.email,
     username: userFound.username,
+    profileImage: userFound.profileImage
   });
 };
 

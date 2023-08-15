@@ -11,9 +11,11 @@ import { authRequire } from "../middlewares/validateToken.js";
 import { validateSchema } from "../middlewares/validatorMiddleware.js";
 import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
 
+import {upload} from '../middlewares/multerMiddleware.js'
+
 const router = Router();
 
-router.post("/register", validateSchema(registerSchema), register);
+router.post("/register", upload.single('profileImage'),validateSchema(registerSchema), register);
 router.post("/login", validateSchema(loginSchema), login);
 router.post("/logout", authRequire, logout);
 
